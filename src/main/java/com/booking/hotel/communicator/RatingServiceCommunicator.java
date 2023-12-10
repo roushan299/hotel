@@ -18,7 +18,9 @@ public class RatingServiceCommunicator {
 
     public long getRating(String id){
         String url = "http://localhost:8081/rating/id/";
-        ResponseEntity<Long> responseEntity = this.restTemplate.getForEntity(url+id, Long.class);
-        return responseEntity.getBody();
+//        ResponseEntity<Long> responseEntity = this.restTemplate.getForEntity(url+id, Long.class);
+//        return responseEntity.getBody();
+        Long ratingResponse = this.restTemplate.getForObject(url+id, Long.class);
+        return  ratingResponse;
     }
 }
