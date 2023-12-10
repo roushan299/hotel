@@ -1,11 +1,12 @@
 package com.booking.hotel.service;
 
+import com.booking.hotel.communicator.RatingServiceCommunicator;
 import com.booking.hotel.exceptions.HotelNotFound;
 import com.booking.hotel.model.Hotel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.*;
 
@@ -13,8 +14,10 @@ import java.util.*;
 public class HotelService {
 
     private List<Hotel> hotelList = new ArrayList<>();
-
     private Map<String, Hotel> hotelMap = new HashMap<>();
+
+    @Autowired
+    private RatingServiceCommunicator ratingServiceCommunicator;
     public void createHotel(Hotel hotel) {
         this.hotelList.add(hotel);
         this.hotelMap.put(hotel.getId(), hotel);
@@ -24,7 +27,11 @@ public class HotelService {
         if(ObjectUtils.isEmpty(hotelMap.get(id))){
             throw new HotelNotFound("Hotel not found for id: "+id);
         }
-        return hotelMap.get(id);
+        Hotel hotel = this.hotelMap.get(id);
+        //rest service to fetch the rating by id
+        long updatedRating = this.ratingServiceCommunicator.getRating(id);
+        hotel.setRating(updatedRating);
+        return hotel;
     }
 
     public List<Hotel> getAllHotels() {
