@@ -15,12 +15,15 @@ public class HotelService {
 
     private List<Hotel> hotelList = new ArrayList<>();
     private Map<String, Hotel> hotelMap = new HashMap<>();
-
     @Autowired
     private RatingServiceCommunicator ratingServiceCommunicator;
+
     public void createHotel(Hotel hotel) {
+        Map<String, Long> ratingMap = new HashMap<>();
+        ratingMap.put(hotel.getId(), hotel.getRating());
         this.hotelList.add(hotel);
         this.hotelMap.put(hotel.getId(), hotel);
+        this.ratingServiceCommunicator.addRating(ratingMap);
     }
 
     public Hotel getHotelById(String id) {
@@ -43,6 +46,9 @@ public class HotelService {
             Hotel hotel = this.getHotelById(id);
             this.hotelList.remove(hotel);
             this.hotelMap.remove(id);
+
+            //deleting hotel rating from the rating service
+            this.ratingServiceCommunicator.deleteRating(id);
         }
     }
 
@@ -53,6 +59,14 @@ public class HotelService {
             this.hotelList.remove(prevHotel);
             this.hotelList.add(hotel);
             this.hotelMap.put(hotel.getId(), hotel);
+
+            //updating rating in the rating service api
+            if(!prevHotel.getRating().equals(hotel.getRating())){
+                Map<String, Long> updatedRating = new HashMap<String,Long>();
+                updatedRating.put(hotel.getId(), hotel.getRating());
+                this.ratingServiceCommunicator.updateRating(updatedRating);
+            }
         }
     }
+
 }
