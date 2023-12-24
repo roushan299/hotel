@@ -2,6 +2,7 @@ package com.booking.hotel.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HotelSecurityConfig {
 
     @Bean
@@ -23,7 +25,8 @@ public class HotelSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                //.formLogin();
+                .httpBasic();
         return http.build();
     }
 
@@ -32,7 +35,7 @@ public class HotelSecurityConfig {
         UserDetails user1 = User.builder()
                 .username("tony")
                 .password(passwordEncoder().encode("password"))
-                .roles("NORMAL")
+                .roles("ADMIN")
                 .build();
 
         UserDetails user2 = User.builder()
