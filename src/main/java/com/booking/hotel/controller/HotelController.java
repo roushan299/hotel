@@ -1,5 +1,6 @@
 package com.booking.hotel.controller;
 
+import com.booking.hotel.dto.HotelRequest;
 import com.booking.hotel.exceptions.BadRequestException;
 import com.booking.hotel.model.Hotel;
 import com.booking.hotel.service.HotelService;
@@ -17,7 +18,7 @@ public class HotelController {
     HotelService hotelService;
 
     @PostMapping("/create")
-    public void createHotel(@Valid @RequestBody Hotel hotel, BindingResult bindingResult){
+    public void createHotel(@Valid @RequestBody HotelRequest hotel, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw  new BadRequestException("Request Not Valid");
         }
@@ -25,7 +26,7 @@ public class HotelController {
     }
 
     @GetMapping("/id/{id}")
-    public Hotel getHotelById(@PathVariable("id") String id){
+    public Hotel getHotelById(@PathVariable("id") Long id){
        Hotel hotel =  hotelService.getHotelById(id);
        return hotel;
     }
@@ -37,7 +38,7 @@ public class HotelController {
     }
 
     @DeleteMapping("/remove/id/{id}")
-    public void deleteHotelById(@PathVariable("id") String id){
+    public void deleteHotelById(@PathVariable("id") Long id){
         this.hotelService.deleteHotelById(id);
     }
 
