@@ -1,5 +1,6 @@
 package com.booking.hotel.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HotelSecurityConfig {
 
+    @Autowired
+    UserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable()
@@ -27,8 +31,13 @@ public class HotelSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                //.formLogin();
-                .httpBasic();
+                .rememberMe().userDetailsService(userDetailsService)
+                .and()
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .and()
+                .logout().deleteCookies("remember-me");
+                //.httpBasic();
         return http.build();
     }
 
