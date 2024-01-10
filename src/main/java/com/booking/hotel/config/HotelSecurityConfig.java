@@ -1,5 +1,6 @@
 package com.booking.hotel.config;
 
+import com.booking.hotel.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,10 +26,13 @@ public class HotelSecurityConfig {
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/user/register").permitAll()
+                .authorizeHttpRequests().requestMatchers("/user/register", "auth/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -36,8 +41,10 @@ public class HotelSecurityConfig {
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .and()
-                .logout().deleteCookies("remember-me");
-                //.httpBasic();
+                .logout().deleteCookies("remember-me").and()
+                .httpBasic();
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
