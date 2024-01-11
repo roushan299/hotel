@@ -42,9 +42,11 @@ public class HotelSecurityConfig {
                 .loginPage("/login").permitAll()
                 .and()
                 .logout().deleteCookies("remember-me").and()
-                .httpBasic();
+                .oauth2Login().loginPage("/login");
+//                .httpBasic();
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

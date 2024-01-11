@@ -77,7 +77,6 @@
 			<artifactId>jjwt-api</artifactId>
 			<version>0.12.3</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -85,7 +84,6 @@
 			<version>0.12.3</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -93,6 +91,15 @@
 			<version>0.12.3</version>
 			<scope>runtime</scope>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.okta.spring/okta-spring-boot-starter -->
+		<dependency>
+			<groupId>com.okta.spring</groupId>
+			<artifactId>okta-spring-boot-starter</artifactId>
+			<version>3.0.6</version>
+		</dependency>
+
 
 	</dependencies>
 

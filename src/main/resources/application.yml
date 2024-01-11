@@ -8,3 +8,8 @@ spring:
     hibernate.ddl-auto: update
 server:
   port: 8082
+okta:
+  oauth2:
+    issuer: https://dev-06445878.okta.com/oauth2/default
+    client-id: 0oae9qut5uIUIS0qA5d7
+    client-secret: CG68wfyZJaUHRQ3A4uwNpbpQLomLQ5T_cE0_g3YbDK-gnLaib8yUngxU6LL7e5Ct
